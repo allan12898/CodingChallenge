@@ -1,0 +1,52 @@
+﻿@page "/employees"
+@using CodingChallenge.Data
+@using CodingChallenge.Domain.Models.Models
+@inject EmployeeService employeeService
+
+<h1>Students</h1>
+
+<p>This component demonstrates managing Employees data.</p>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class='table table-hover'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>School</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in employees)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Gender</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@functions {
+    Employee[] employees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await load();
+    }
+
+    protected async Task load()
+    {
+        employees = await employeeService.GetEmployeesAsync();
+    }
+}
