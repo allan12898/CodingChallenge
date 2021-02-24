@@ -1,0 +1,74 @@
+﻿@page "/employees/{Id:int}"
+@using CodingChallenge.Data
+@using CodingChallenge.Domain.Models.Models
+@inject EmployeeService employeeService
+@inject TimekeepingTransactionService timekeepingService
+
+
+<p>Employee's Profile.</p>
+
+@if (_employee == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+    <h3>@_employee.FirstName @_employee.LastName</h3>
+
+
+
+}
+
+
+@functions {
+    [Parameter]
+    public int Id { get; set; }
+    Employee _employee = new Employee();
+    List<TimekeepingTransaction> timekeepings;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await load();
+    }
+
+    protected async Task load()
+    {
+        _employee = await employeeService.GetEmployeesByIdAsync(Id.ToString());
+        var timeKeep = _employee.TimekeepingTransaction.AsQueryable()
+            .GroupBy(c => c.TransactionTypeId);
+    }
+
+
+    private async Task Search()
+    {
+        //employees = await employeeService.GetEmployeesAsync();
+        //if (this.filter != "")
+        //{
+        //    employees = employees.Where(c => c.FirstName == this.filter || c.LastName == this.filter).ToList();
+        //}
+    }
+
+    private async Task CreateOrEdit()
+    {
+
+        //if (_employee.Id == null)
+        //{
+        //    var response = await employeeService.InsertEmployeeAsync(_employee);
+        //}
+        //else
+        //{
+        //    var response = await employeeService.UpdateEmployeeAsync(_employee.Id.ToString(), _employee);
+        //}
+        //await load();
+        //this.showForm = false;
+    }
+    private void Create()
+    {
+    }
+    private async Task Edit(MouseEventArgs e, int? id)
+    {
+    }
+
+}
+

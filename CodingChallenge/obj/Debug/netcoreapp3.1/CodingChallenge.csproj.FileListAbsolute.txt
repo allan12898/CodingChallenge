@@ -200,3 +200,5 @@ C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\bin\Debug\netcoreapp3.
 C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\bin\Debug\netcoreapp3.1\CodingChallenge.API.dll
 C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\bin\Debug\netcoreapp3.1\CodingChallenge.API.pdb
 C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\obj\Debug\netcoreapp3.1\Razor\Pages\Employees.razor.g.cs
+C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\EmployeeDetail.razor.g.cs
+C:\Users\pc4\source\repos\CodingChallenge\CodingChallenge\obj\Debug\netcoreapp3.1\Razor\Pages\EmployeeDetail.razor.g.cs

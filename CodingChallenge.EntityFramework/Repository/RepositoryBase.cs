@@ -43,6 +43,10 @@ namespace CodingChallenge.Data.Repository
         public TEntity GetById(int entityID)
         {
             var result = this.context.Find<TEntity>(entityID);
+            if(result != null)
+            {
+                this.context.Entry(result).State = EntityState.Detached;
+            }
 
             return result;
         }

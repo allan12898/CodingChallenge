@@ -23,14 +23,14 @@ namespace CodingChallenge.Controller
         [HttpGet]
         public IActionResult GetAll( int skip = 0, int count = 100)
         {
-            var product = _employeeRepository.GetAll(skip, count);
-            return Ok(product);
+            var employee = _employeeRepository.GetAll(skip, count);
+            return Ok(employee);
         }
         [HttpGet("{id}")]
         public IActionResult GetEmployeeById(int id)
         {
-            var product = _employeeRepository.GetById(id);
-            return Ok(product);
+            var employee = _employeeRepository.GetById(id);
+            return Ok(employee);
         }
 
         [HttpPost]

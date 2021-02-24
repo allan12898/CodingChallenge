@@ -15,11 +15,11 @@ namespace CodingChallenge.Data
         string baseUrl = "https://localhost:44357/";
 
 
-        public async Task<Employee[]> GetEmployeesAsync()
+        public async Task<List<Employee>> GetEmployeesAsync()
         {
             HttpClient http = new HttpClient();
             var json = await http.GetStringAsync($"{baseUrl}api/employees");
-            return JsonConvert.DeserializeObject<Employee[]>(json);
+            return JsonConvert.DeserializeObject<List<Employee>>(json);
         }
 
         public async Task<Employee> GetEmployeesByIdAsync(string id)

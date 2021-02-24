@@ -2,10 +2,11 @@
 @using CodingChallenge.Data
 @using CodingChallenge.Domain.Models.Models
 @inject EmployeeService employeeService
+@inject NavigationManager NavigationManager
 
-<h1>Students</h1>
+<h1>Employees</h1>
 
-<p>This component demonstrates managing Employees data.</p>
+<p>Manage Employees.</p>
 
 @if (employees == null)
 {
@@ -13,13 +14,35 @@
 }
 else
 {
+    <input type="text" @bind="filter" name="filter" />
+    <button name="search" @onclick="Search">search</button>
+    @if (showForm)
+    {
+        <label for="firstName">First Name</label>
+        <input type="text" @bind="_employee.FirstName" />
+        <label for="lastName">Last Name</label>
+        <input type="text" @bind="_employee.LastName" />
+        <label for="gender">Gender</label>
+        <input type="text" @bind="_employee.Gender" />
+        <label for="dateHired">Date Hired</label>
+        <input type="date" @bind="_employee.DateHired" />
+        <button name="save" @onclick="CreateOrEdit">Save</button>
+    }
+    else
+    {
+        <button name="Create" @onclick="Create">New</button>
+    }
+
+
+
     <table class='table table-hover'>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>School</th>
+                <th>Gender</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -30,15 +53,25 @@ else
                     <td>@item.FirstName</td>
                     <td>@item.LastName</td>
                     <td>@item.Gender</td>
+                    <td>
+                        <button @onclick="@(e => Open(e, item.Id))">Open</button>
+                        <button @onclick="@(e => Edit(e, item.Id))">Edit</button>
+                        <button @onclick="@(e => Delete(e, item.Id))">Delete</button>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
+
+
 }
 
 
 @functions {
-    Employee[] employees;
+    List<Employee> employees;
+    Employee _employee = new Employee();
+    private string filter = "";
+    private bool showForm = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -49,4 +82,48 @@ else
     {
         employees = await employeeService.GetEmployeesAsync();
     }
+    private void Open(MouseEventArgs e, int? id)
+    {
+        NavigationManager.NavigateTo($"employees/{id}");
+    }
+
+
+    private async Task Search()
+    {
+        employees = await employeeService.GetEmployeesAsync();
+        if (this.filter != "")
+        {
+            employees = employees.Where(c => c.FirstName == this.filter || c.LastName == this.filter).ToList();
+        }
+    }
+
+    private async Task CreateOrEdit()
+    {
+
+        if (_employee.Id == null)
+        {
+            var response = await employeeService.InsertEmployeeAsync(_employee);
+        }
+        else
+        {
+            var response = await employeeService.UpdateEmployeeAsync(_employee.Id.ToString(), _employee);
+        }
+        await load();
+        this.showForm = false;
+    }
+    private void Create()
+    {
+        this.showForm = true;
+    }
+    private async Task Edit(MouseEventArgs e, int? id)
+    {
+        this.showForm = true;
+        _employee = await employeeService.GetEmployeesByIdAsync(id.ToString());
+    }
+    private async Task Delete(MouseEventArgs e, int? id)
+    {
+        await employeeService.DeleteEmployeeAsync(id.ToString());
+        await load();
+    }
 }
+
